@@ -9,11 +9,11 @@ class Button():
         self.rect.center = (x, y)
         self.clicked = False
     
-    def clicked(self):
+    def is_clicked(self):
+        # Returns True when the button is clicked, False otherwise
         clicked = False
         # Gets the mouse position
         mouse_pos = pygame.mouse.get_pos()
-
         # Check if the mouse clicks the button
         if self.rect.collidepoint(mouse_pos) and pygame.MOUSEBUTTONDOWN and not self.clicked:
             self.clicked = True
@@ -21,11 +21,8 @@ class Button():
         # Makes sures we can click the button again later
         if pygame.MOUSEBUTTONUP:
             self.clicked = False
-
         return clicked
 
     def draw(self, window):
-        
-
         # Draws the button onto the screen
         window.blit(self.image, (self.rect.x, self.rect.y))

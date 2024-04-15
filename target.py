@@ -10,7 +10,7 @@ class Target:
         self.y = y
         self.size = size
 
-    def hit(self, x, y):
+    def clicked(self, x, y):
             area = math.sqrt((x - self.x)**2 + (y - self.y)**2)
             return area <= self.size
     
