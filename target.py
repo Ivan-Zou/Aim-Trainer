@@ -20,5 +20,3 @@ class Target:
         pygame.draw.circle(window, self.PRIMARY_COLOR, (self.x, self.y), self.size)
         pygame.draw.circle(window, self.SECONDARY_COLOR, (self.x, self.y), self.size * 0.667)
         pygame.draw.circle(window, self.PRIMARY_COLOR, (self.x, self.y), self.size * 0.334)
-
-    
