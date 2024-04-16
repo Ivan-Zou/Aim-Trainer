@@ -1,4 +1,4 @@
-import math, random, time # interal libraries
+import random, time # interal libraries
 import pygame # external libraries
 
 # python files
@@ -83,6 +83,10 @@ def end_screen(window, elapsed_time, targets_clicked, num_clicks):
     speed = round(targets_clicked / elapsed_time, 1)
     speed_label = LABEL_FONT.render(f"Speed: {speed} targets/sec", 1, "white")
 
+    play_again_img = pygame.image.load("play_again.png").convert_alpha()
+    play_again_button = Button(constants.WINDOW_WIDTH // 2, 500, play_again_img, 0.75)
+    play_again_button.draw(window)
+
     window.blit(time_label, (get_middle(time_label), 200))
     window.blit(hits_label, (get_middle(hits_label), 250))
     window.blit(accuracy_label, (get_middle(accuracy_label), 300))
@@ -96,7 +100,8 @@ def end_screen(window, elapsed_time, targets_clicked, num_clicks):
             if event.type == pygame.QUIT:
                 quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                main()
+                if play_again_button.is_clicked():
+                    main()
 
 def get_middle(object):
     return constants.WINDOW_WIDTH / 2 - object.get_width() / 2
