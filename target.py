@@ -11,10 +11,12 @@ class Target:
         self.size = size
 
     def clicked(self, x, y):
-            area = math.sqrt((x - self.x)**2 + (y - self.y)**2)
-            return area <= self.size
+        # checks if (x, y) is within the area of the target
+        area = math.sqrt((x - self.x)**2 + (y - self.y)**2)
+        return area <= self.size
     
     def draw(self, window):
+        # draws the target onto the screen
         pygame.draw.circle(window, self.PRIMARY_COLOR, (self.x, self.y), self.size)
         pygame.draw.circle(window, self.SECONDARY_COLOR, (self.x, self.y), self.size * 0.667)
         pygame.draw.circle(window, self.PRIMARY_COLOR, (self.x, self.y), self.size * 0.334)

@@ -1,13 +1,16 @@
+# Window Constants
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
+# Target Constants
 TARGET_PADDING = 50
 EASY_TARGET_SIZE = 50
 MEDIUM_TARGET_SIZE = 30
 HARD_TARGET_SIZE = 10
-
 NUM_TARGETS = 3
 
+# Info Bar Constants
 INFO_BAR_HEIGHT = 50
 
+# Background Constants
 BACKGROUND_COLOR = (0, 30, 50)
