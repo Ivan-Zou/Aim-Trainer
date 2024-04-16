@@ -17,3 +17,4 @@
 - medium.png - image of the medium difficult button
 - README.md
 - target.py - contains the Target class
+- test.py - contains test cases for this program
