@@ -1,7 +1,7 @@
 import pygame
 
 class Button():
-    def __init__(self, x, y, image, scale):
+    def __init__(self, x: int, y: int, image: object, scale: float):
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
@@ -9,7 +9,7 @@ class Button():
         self.rect.center = (x, y)
         self.clicked = False
     
-    def is_clicked(self):
+    def is_clicked(self) -> bool:
         # Returns True when the button is clicked, False otherwise
         clicked = False
         # Gets the mouse position
@@ -23,6 +23,6 @@ class Button():
             self.clicked = False
         return clicked
 
-    def draw(self, window):
+    def draw(self, window: object):
         # Draws the button onto the screen
         window.blit(self.image, (self.rect.x, self.rect.y))

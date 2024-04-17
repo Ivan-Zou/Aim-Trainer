@@ -20,7 +20,7 @@ LABEL_FONT = pygame.font.SysFont("roboto", 50)
 
 GAME_DURATION = 30
 
-def start_screen(window):
+def start_screen(window: object):
     # set the background
     window.fill(constants.BACKGROUND_COLOR)
 
@@ -53,13 +53,13 @@ def start_screen(window):
                 quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if easy_button.is_clicked():
-                    return constants.EASY_TARGET_SIZE
+                    return constants.EASY_TARGET_SIZE, "Easy"
                 elif medium_button.is_clicked():
-                    return constants.MEDIUM_TARGET_SIZE
+                    return constants.MEDIUM_TARGET_SIZE, "Medium"
                 elif hard_button.is_clicked():
-                    return constants.HARD_TARGET_SIZE
+                    return constants.HARD_TARGET_SIZE, "Hard"
         
-def format_time(secs):
+def format_time(secs: float) -> str:
     # Format time in seconds into a presentable min:sec string
     if secs < 0:
         return 0
@@ -67,13 +67,13 @@ def format_time(secs):
     minutes = int(secs // 60)
     return f"{minutes:02d}:{seconds:02d}"
 
-def draw(window, targets):
+def draw(window: object, targets: list):
     # Draw the background and targets to the screen
     window.fill(constants.BACKGROUND_COLOR)
     for target in targets:
         target.draw(window)
 
-def draw_info_bar(window, elapsed_time, targets_clicked, num_clicks):
+def draw_info_bar(window: object, elapsed_time: float, targets_clicked: int, num_clicks: int):
     # create the bar
     pygame.draw.rect(window, "black", (0, 0, constants.WINDOW_WIDTH, constants.INFO_BAR_HEIGHT))
     
@@ -88,11 +88,12 @@ def draw_info_bar(window, elapsed_time, targets_clicked, num_clicks):
     window.blit(time_label, (get_middle(time_label), 5))
     window.blit(percentage_hit_label, (constants.WINDOW_WIDTH - 125, 5))
 
-def end_screen(window, elapsed_time, targets_clicked, num_clicks):
+def end_screen(window: object, elapsed_time: float, targets_clicked: int, num_clicks: int, difficulty: str):
     # set the background
     window.fill(constants.BACKGROUND_COLOR)
 
     # create the statistic labels to be shown on the screen
+    difficulty_label = LABEL_FONT.render(f"Difficulty: {difficulty}", 1, "white")
     time_label = LABEL_FONT.render(f"Time: {format_time(elapsed_time)}", 1, "white")
     hits_label = LABEL_FONT.render(f"Hits: {targets_clicked}", 1, "white")
     accuracy = round(0.0 if num_clicks == 0 else (targets_clicked / num_clicks) * 100, 1)
@@ -106,6 +107,7 @@ def end_screen(window, elapsed_time, targets_clicked, num_clicks):
     play_again_button.draw(window)
 
     # Draw the labels on to the screen 
+    window.blit(difficulty_label, (get_middle(difficulty_label), 150))
     window.blit(time_label, (get_middle(time_label), 200))
     window.blit(hits_label, (get_middle(hits_label), 250))
     window.blit(accuracy_label, (get_middle(accuracy_label), 300))
@@ -124,7 +126,7 @@ def end_screen(window, elapsed_time, targets_clicked, num_clicks):
                 if play_again_button.is_clicked():
                     main()
 
-def get_middle(object):
+def get_middle(object: object) -> float:
     # get the middle of the window based on the object's width
     return constants.WINDOW_WIDTH / 2 - object.get_width() / 2
 
@@ -135,13 +137,14 @@ def main():
     targets_clicked = 0
     target_size = -1
     targets = []
+    difficulty = None
 
     pygame.time.set_timer(TARGET_EVENT, 1)
     game_running = True
     while game_running:
         # show the start screen if the player hasn't chosen a difficulty to set the target set
         if target_size == -1:
-            target_size = start_screen(GAME_WINDOW)
+            target_size, difficulty = start_screen(GAME_WINDOW)
             # start the start time when the player chose a difficulty
             start_time = time.time()
         clock.tick(60)
@@ -176,7 +179,7 @@ def main():
         # End the game when it exceeds the game duration
         if elapsed_time > GAME_DURATION:
             # show the end screen
-            end_screen(GAME_WINDOW, elapsed_time, targets_clicked, num_clicks)
+            end_screen(GAME_WINDOW, elapsed_time, targets_clicked, num_clicks, difficulty)
 
         # Draw and update targets and info bar
         draw(GAME_WINDOW, targets)
