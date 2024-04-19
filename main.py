@@ -18,9 +18,9 @@ TARGET_EVENT = pygame.USEREVENT
 # create a font to be used by labels
 LABEL_FONT = pygame.font.SysFont("roboto", 50)
 
-GAME_DURATION = 30
-
 def start_screen(window: object):
+    # Draw the start screen and select a game difficulty
+
     # set the background
     window.fill(constants.BACKGROUND_COLOR)
 
@@ -58,11 +58,57 @@ def start_screen(window: object):
                     return constants.MEDIUM_TARGET_SIZE, "Medium"
                 elif hard_button.is_clicked():
                     return constants.HARD_TARGET_SIZE, "Hard"
-        
+                
+def duration_screen(window: object) -> int:
+    # Draw the select game duration screen and select the duration of the game
+
+    # set the background
+    window.fill(constants.BACKGROUND_COLOR)
+
+    # create and draw the title of this game, Aim Trainers
+    title_label = pygame.font.SysFont("roboto", 100).render("Game Duration", 1, "orange")
+    window.blit(title_label, (get_middle(title_label), 50))
+
+    # load the time duration button images
+    fifteen_img = pygame.image.load("15.png").convert_alpha()
+    thirty_img = pygame.image.load("30.png").convert_alpha()
+    forty_five_img = pygame.image.load("45.png").convert_alpha()
+    sixty_img = pygame.image.load("60.png").convert_alpha()
+
+    # create the time duration button objects
+    fifteen_button = Button(constants.WINDOW_WIDTH // 2, 200, fifteen_img, 0.5)
+    thirty_button = Button(constants.WINDOW_WIDTH // 2, 300, thirty_img, 0.5)
+    forty_five_button = Button(constants.WINDOW_WIDTH // 2, 400, forty_five_img, 0.5)
+    sixty_button = Button(constants.WINDOW_WIDTH // 2, 500, sixty_img, 0.5)
+
+    # draw the buttons onto the screen
+    fifteen_button.draw(window)
+    thirty_button.draw(window)
+    forty_five_button.draw(window)
+    sixty_button.draw(window)
+
+    # update the screen
+    pygame.display.update()
+
+    # show the duration screen until the player quits or have chosen a time duration
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if fifteen_button.is_clicked():
+                    return 15
+                elif thirty_button.is_clicked():
+                    return 30
+                elif forty_five_button.is_clicked():
+                    return 45
+                elif sixty_button.is_clicked():
+                    return 60
+
 def format_time(secs: float) -> str:
     # Format time in seconds into a presentable min:sec string
     if secs < 0:
-        return 0
+        raise ValueError
     seconds = int(round(secs % 60, 1))
     minutes = int(secs // 60)
     return f"{minutes:02d}:{seconds:02d}"
@@ -74,6 +120,8 @@ def draw(window: object, targets: list):
         target.draw(window)
 
 def draw_info_bar(window: object, elapsed_time: float, targets_clicked: int, num_clicks: int):
+    # Draw a bar that displays current statistics of the current game session
+
     # create the bar
     pygame.draw.rect(window, "black", (0, 0, constants.WINDOW_WIDTH, constants.INFO_BAR_HEIGHT))
     
@@ -89,6 +137,8 @@ def draw_info_bar(window: object, elapsed_time: float, targets_clicked: int, num
     window.blit(percentage_hit_label, (constants.WINDOW_WIDTH - 125, 5))
 
 def end_screen(window: object, elapsed_time: float, targets_clicked: int, num_clicks: int, difficulty: str):
+    # Draw the end screen and display all the stats from the game session
+
     # set the background
     window.fill(constants.BACKGROUND_COLOR)
 
@@ -138,6 +188,7 @@ def main():
     target_size = -1
     targets = []
     difficulty = None
+    game_duration = -1
 
     pygame.time.set_timer(TARGET_EVENT, 1)
     game_running = True
@@ -145,8 +196,13 @@ def main():
         # show the start screen if the player hasn't chosen a difficulty to set the target set
         if target_size == -1:
             target_size, difficulty = start_screen(GAME_WINDOW)
-            # start the start time when the player chose a difficulty
+            
+        # show the select time duration screen if the playeer hasn't chosen a duration to play
+        if game_duration == -1:
+            game_duration = duration_screen(GAME_WINDOW)
+            # start the start time when the player chose a game duration
             start_time = time.time()
+
         clock.tick(60)
         clicked = False
         mouse_pos = pygame.mouse.get_pos()
@@ -177,13 +233,13 @@ def main():
                 targets_clicked += 1
 
         # End the game when it exceeds the game duration
-        if elapsed_time > GAME_DURATION:
+        if elapsed_time > game_duration:
             # show the end screen
             end_screen(GAME_WINDOW, elapsed_time, targets_clicked, num_clicks, difficulty)
 
         # Draw and update targets and info bar
         draw(GAME_WINDOW, targets)
-        draw_info_bar(GAME_WINDOW, GAME_DURATION - elapsed_time, targets_clicked, num_clicks)
+        draw_info_bar(GAME_WINDOW, game_duration - elapsed_time, targets_clicked, num_clicks)
         pygame.display.update()
 
     pygame.quit()
