@@ -9,6 +9,10 @@
 
 ## Code Structure
 
+- 15.png - image of the 15 seconds button
+- 30.png - image of the 30 seconds button
+- 45.png - image of the 45 seconds button
+- 60.png - image of the 60 seconds button
 - button.py - contains the Button class
   - This class allow us to have functional buttons within the game, so the player can select different things, such as difficulty.
   - The key methods are is_clicked, which returns true if the button instance has been clicked and false otherwise, and draw, which draws the button given its xy-coordinate and image provided upon initialization
@@ -19,7 +23,7 @@
 - hard.png - image of the hard difficult button
 - main.py - contains the game logic and game executable
   - Here I created methods for code that I use multiple times like format_time and get_middle. This is to prevent repeated code.
-  - I also created methods for thing I will draw to the window, such as the start screen, choose duration screen, info bar, drawing targets, and the end screen. Though this code is only used once, I put them in a method so the main methods can be easier to read and focus on the game mechanics, such as generating random targets, detecting a target getting clicked, tracking stats, and such, rather than drawing objects to the screen.
+  - I also created methods for thing I will draw to the window, such as the start screen, select duration screen, info bar, drawing targets, and the end screen. Though this code is only used once, I put them in a method so the main methods can be easier to read and focus on the game mechanics, such as generating random targets, detecting a target getting clicked, tracking stats, and such, rather than drawing objects to the screen.
 - medium.png - image of the medium difficult button
 - README.md
 - target.py - contains the Target class
