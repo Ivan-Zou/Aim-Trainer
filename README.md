@@ -6,6 +6,7 @@
 2. pip install pygame
 3. run main.py
 4. enjoy the game
+5. a computer mouse is recommended
 
 ## Code Structure
 
