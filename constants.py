@@ -1,5 +1,5 @@
 # Window Constants
-WINDOW_WIDTH = 800
+WINDOW_WIDTH = 1062
 WINDOW_HEIGHT = 600
 
 # Target Constants
